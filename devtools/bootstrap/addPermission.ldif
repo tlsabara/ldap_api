@@ -1,0 +1,6 @@
+# dn: olcDatabase={2}mdb,cn=config
+# changetype: modify
+# add: olcAccess
+# olcAccess: {0}to *
+#   by dn="cn=admin,ou=Users,dc=tlsabara,dc=local" write
+#   by * break

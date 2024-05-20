@@ -66,6 +66,9 @@ async def user_exists(request: QueryUserRequest):
     """
     Verifica se um usuário existe no servidor LDAP.
 
+    Info:
+        - application_token deve ser o SERVER_TOKEN definido no env. sem isso a operação não pode ser executada.
+
     Args:
         request (QueryUserRequest): Requisição contendo o token da aplicação e o nome de usuário.
 
@@ -92,6 +95,8 @@ async def user_exists(request: QueryUserRequest):
 async def change_password(request: PasswordChangeRequest):
     """
     Altera a senha de um usuário no servidor LDAP.
+    Info:
+        - application_token deve ser o SERVER_TOKEN definido no env. sem isso a operação não pode ser executada.
 
     Args:
         request (PasswordChangeRequest): Requisição contendo o token da aplicação, nome de usuário e nova senha.

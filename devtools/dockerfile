@@ -1,0 +1,4 @@
+FROM bitnami/openldap:2.5.17-debian-12-r25
+COPY ./bootstrap/* /container/service/slapd/assets/config/bootstrap/ldif/custom/
+COPY ./init.sh /container/service/slapd/assets/scripts/startup.sh
+CMD ["bash", "/container/service/slapd/assets/scripts/startup.sh"]

@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  openldap:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      LDAP_ORGANISATION: "LDAP_API"
+      LDAP_ROOT: "dc=tlsabara,dc=local"
+      LDAP_ADMIN_USERNAME: "ldap_api"
+      LDAP_ADMIN_PASSWORD: "ldap@api@tool"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "false"
+      LDAP_PORT_NUMBER: "389"
+      LDAP_CONFIG_ADMIN_ENABLED: "true"
+      LDAP_USER_DC: "base"
+      LDAP_USERS: "base"
+      LDAP_PASSWORDS: "base"
+
+    ports:
+      - "389:389"
+      - "636:636"
+    volumes:
+      - ldap_data1:/var/lib/ldap
+      - ldap_config1:/etc/ldap/slapd.d
+      - ./bootstrap:/container/service/slapd/assets/config/bootstrap/ldif/custom
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8080:80"
+    depends_on:
+      - openldap
+
+volumes:
+  ldap_data1:
+  ldap_config1:
