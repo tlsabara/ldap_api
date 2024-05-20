@@ -1,0 +1,34 @@
+FROM python:3.12
+LABEL authors="tlsabara"
+
+RUN apt-get update
+RUN apt-get install -y libsasl2-dev python3-dev libldap2-dev libssl-dev
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONIOENCODING=utf-8
+ENV LOCAL_APP_PATH=/app
+
+ENV PYTHONPATH=${LOCAL_APP_PATH}
+
+ENV SERVER_PORT = ${SERVER_PORT}
+ENV LDAP_SERVER = ${LDAP_SERVER}
+ENV LDAP_BASE_DN = ${LDAP_BASE_DN}
+ENV LDAP_USER_DN = ${LDAP_USER_DN}
+ENV LDAP_USER_PASSWORD = ${LDAP_USER_PASSWORD}
+ENV SECRET_KEY = ${SECRET_KEY}
+ENV ALGORITHM = ${ALGORITHM}
+ENV ACCESS_TOKEN_EXPIRE_MINUTES = ${ACCESS_TOKEN_EXPIRE_MINUTES}
+ENV SERVER_TOKEN = ${SERVER_TOKEN}
+
+WORKDIR $LOCAL_APP_PATH
+
+COPY ./requirements.txt .
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
